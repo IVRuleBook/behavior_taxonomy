@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behavior Taxonomies and Rulebooks for Safety-Assured Autonomous Driving — IEEE IV 2026 Workshop</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f8f6f1;
+    --accent: #c0392b;
+    --accent-light: #e74c3c;
+    --blue: #1a5276;
+    --blue-light: #2980b9;
+    --gold: #d4a017;
+    --gray-100: #f0ede6;
+    --gray-200: #e2ded4;
+    --gray-300: #c4bfb3;
+    --gray-500: #8a857a;
+    --gray-700: #4a4740;
+    --white: #ffffff;
+    --max-width: 1100px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26,26,46,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--accent);
+  }
+  nav .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  nav .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--gray-300);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  nav .nav-brand span { color: var(--accent-light); }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.8rem;
+  }
+  nav ul li a {
+    color: var(--gray-300);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  nav ul li a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: var(--white);
+    padding: 5rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(192,57,43,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(26,82,118,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 2rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    margin-bottom: 1.8rem;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-light);
+    border-radius: 50%;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    line-height: 1.15;
+    font-weight: 400;
+    max-width: 800px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent-light);
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .hero-meta-item .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+    font-weight: 600;
+  }
+  .hero-meta-item .value {
+    font-size: 0.95rem;
+    color: var(--gray-200);
+    font-weight: 400;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  section + section { padding-top: 0; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    line-height: 1.2;
+  }
+  .section-body {
+    max-width: 750px;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+  .section-body p + p { margin-top: 1rem; }
+
+  /* ── TOPICS ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .topic-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 1.2rem 1.4rem;
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .topic-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(192,57,43,0.06);
+  }
+  .topic-card strong {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-size: 0.88rem;
+  }
+
+  /* ── DATES BAR ── */
+  .dates-bar {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 1.8rem 2rem;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .date-item .date-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-500);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .date-item .date-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .date-item .date-value.past {
+    color: var(--gray-500);
+    text-decoration: line-through;
+  }
+
+  /* ── SPEAKERS ── */
+  .speakers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .speaker-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-top: 4px solid var(--blue);
+    border-radius: 8px;
+    padding: 1.2rem 1.3rem;
+  }
+  .speaker-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .speaker-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .speaker-avatar.accent { background: var(--accent); }
+  .speaker-avatar.gold { background: var(--gold); }
+  .speaker-avatar.blue-light { background: var(--blue-light); }
+  .speaker-avatar.dark { background: var(--gray-700); }
+  .speaker-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .speaker-name a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--gray-400);
+  }
+  .speaker-name a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .speaker-affiliation {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    font-weight: 400;
+  }
+  .speaker-talk-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    color: var(--blue);
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+    font-style: italic;
+  }
+  .speaker-abstract {
+    font-size: 0.84rem;
+    color: var(--gray-700);
+    line-height: 1.7;
+  }
+  .speaker-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    margin-bottom: 0.8rem;
+  }
+  .speaker-tag.invited {
+    background: rgba(192,57,43,0.08);
+    color: var(--accent);
+  }
+  .speaker-tag.paper {
+    background: rgba(26,82,118,0.08);
+    color: var(--blue);
+  }
+
+  /* ── PAPERS ── */
+  .paper-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px 8px 8px 4px;
+    padding: 1.5rem 1.8rem;
+    margin-top: 1.5rem;
+  }
+  .paper-card .paper-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .paper-card .paper-authors {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-bottom: 0.8rem;
+  }
+  .paper-card .paper-abstract {
+    font-size: 0.88rem;
+    color: var(--gray-700);
+    line-height: 1.7;
+  }
+
+  /* ── SCHEDULE ── */
+  .schedule-table {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+  }
+  .schedule-table tr {
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .schedule-table tr:last-child { border-bottom: none; }
+  .schedule-table td {
+    padding: 1rem 0;
+    vertical-align: top;
+  }
+  .schedule-table .time-col {
+    width: 100px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    padding-right: 1.5rem;
+  }
+  .schedule-table .event-title {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.92rem;
+  }
+  .schedule-table .event-detail {
+    font-size: 0.84rem;
+    color: var(--gray-500);
+    margin-top: 0.2rem;
+  }
+  .schedule-table tr.break-row {
+    background: var(--gray-100);
+  }
+  .schedule-table tr.break-row td {
+    padding: 0.6rem 0;
+    padding-left: 0;
+  }
+  .schedule-table tr.break-row .event-title {
+    color: var(--gray-500);
+    font-weight: 500;
+    font-size: 0.84rem;
+  }
+
+  /* ── ORGANIZERS ── */
+  .organizers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+  }
+  .organizer {
+    text-align: center;
+  }
+  .organizer-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    margin: 0 auto 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    background: var(--ink);
+  }
+  .organizer-role {
+    display: inline-block;
+    margin-bottom: 0.3rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .organizer-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .organizer-name a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--gray-400);
+  }
+  .organizer-name a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .organizer-affiliation {
+    font-size: 0.78rem;
+    color: var(--gray-500);
+  }
+
+  /* ── CALL FOR PAPERS BOX ── */
+  .cfp-box {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cfp-box::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(192,57,43,0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .cfp-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .cfp-box p {
+    font-size: 0.9rem;
+    color: var(--gray-300);
+    line-height: 1.7;
+    max-width: 650px;
+    position: relative;
+  }
+  .cfp-box .cfp-code {
+    display: inline-block;
+    margin-top: 1rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    position: relative;
+  }
+  .cfp-link {
+    display: inline-block;
+    margin-top: 1.2rem;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .cfp-link:hover { border-color: var(--white); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: var(--gray-500);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    font-size: 0.82rem;
+    border-top: 2px solid var(--accent);
+  }
+  footer a {
+    color: var(--gray-300);
+    text-decoration: none;
+  }
+  footer a:hover { color: var(--white); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .divider hr {
+    border: none;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    nav ul { display: none; }
+    .hero { padding: 3rem 1.5rem 2.5rem; }
+    section { padding: 2.5rem 1.5rem; }
+    .speakers-grid { grid-template-columns: 1fr; }
+    .schedule-table .time-col { width: 80px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand"><span>IEEE IV 2026</span> · Workshop</div>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#topics">Topics</a></li>
+      <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#papers">Papers</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#organizers">Organizers</a></li>
+      <li><a href="#submission">Submit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Full-Day Workshop · IEEE IV 2026
+    </div>
+    <h1>Behavior Taxonomies and Rulebooks for Safety-Assured Autonomous Driving</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Date</span>
+        <span class="value">Monday, June 22, 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Location</span>
+        <span class="value">Marriott Renaissance Center, Detroit, MI</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Conference</span>
+        <span class="value">IEEE Intelligent Vehicles Symposium (IV) 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">Overview</div>
+  <h2 class="section-title">Bridging Regulation, Safety, and Autonomy</h2>
+  <div class="section-body">
+    <p>Despite significant advances in planning, learning, and verification, behavioral requirements for autonomous vehicles&mdash;derived from traffic regulations, safety standards, and operational contexts&mdash;remain fragmented, difficult to formalize, and hard to certify. Developing structured, machine-interpretable rulebooks that bridge regulatory intent and algorithmic implementation remains an open and pressing problem for both research and deployment.</p>
+    <p>This full-day workshop brings together leading researchers and practitioners from academia and industry to address the challenge of defining, structuring, and enforcing behavioral specifications for autonomous driving systems. Through a combination of invited talks, a paper session, and a panel discussion, the workshop aims to advance a shared understanding of behavior taxonomies, rulebook formalisms, and their role in enabling safety-assured autonomy.</p>
+    <p>The workshop culminates in a forward-looking research roadmap and cross-disciplinary dialogue on the path from behavioral requirements to certifiable, deployable autonomous systems.</p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- TOPICS -->
+<section id="topics">
+  <div class="section-label">Topics of Interest</div>
+  <h2 class="section-title">Key Themes</h2>
+  <div class="topics-grid">
+    <div class="topic-card">
+      <strong>Rulebook Formalisms &amp; Semantics</strong>
+      Formal representations of driving rules, lexicographic prioritization, compositional properties, and machine-interpretable specifications.
+    </div>
+    <div class="topic-card">
+      <strong>Behavior Taxonomies &amp; ODD Modeling</strong>
+      Structured classification of driving behaviors, operational design domain scoping, and competency-based behavior specifications.
+    </div>
+    <div class="topic-card">
+      <strong>Rule-Informed Planning &amp; Control</strong>
+      Integration of behavioral rules into trajectory planning, MPC, reinforcement learning, and end-to-end architectures.
+    </div>
+    <div class="topic-card">
+      <strong>Safety Verification &amp; Validation</strong>
+      Scenario-based testing, safety case construction, formal verification of behavioral compliance, and continuous monitoring.
+    </div>
+    <div class="topic-card">
+      <strong>Regulatory &amp; Policy Frameworks</strong>
+      Traffic law formalization, liability-aware behavior specification, compliance assessment, and cross-jurisdictional harmonization.
+    </div>
+    <div class="topic-card">
+      <strong>Metrics &amp; Evaluation</strong>
+      Behavioral violation scoring, performance measurement, data-driven evaluation methodologies, and benchmarking.
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SPEAKERS -->
+<section id="speakers">
+  <div class="section-label">Invited Speakers</div>
+  <div class="speakers-grid">
+
+    <!-- Andrea Censi -->
+    <div class="speaker-card">
+      <div class="speaker-header">
+        <div class="speaker-avatar accent">AC</div>
+        <div>
+          <div class="speaker-name"><a href="https://www.linkedin.com/in/censi/" target="_blank">Andrea Censi, Ph.D.</a></div>
+          <div class="speaker-affiliation">ETH Zürich · Institute for Dynamic Systems and Control</div>
+        </div>
+      </div>
+      <span class="speaker-tag invited">Invited Talk</span>
+      <div class="speaker-talk-title">Co-Design of Rulebooks and Autonomous Vehicles</div>
+      <div class="speaker-abstract">Rulebooks are one way to encode behavior specifications in a scalable manner for autonomous vehicles without overconstraining agents. There is a tradeoff among the number and complexity of the rules, the implementation cost in terms of sensors, actuators, and computation, and the achievable system performance. This talk will describe how to characterize this trade-off and the problem of optimizing the rules to increase performance and reduce cost while maintaining the same safety guarantees.</div>
+    </div>
+
+    <!-- Jerry Lopez -->
+    <div class="speaker-card">
+      <div class="speaker-header">
+        <div class="speaker-avatar blue-light">JL</div>
+        <div>
+          <div class="speaker-name"><a href="https://www.linkedin.com/in/jerry-lopez-01b21417/" target="_blank">Jerry Lopez</a></div>
+          <div class="speaker-affiliation">Torc Robotics · Safety Assurance</div>
+        </div>
+      </div>
+      <span class="speaker-tag invited">Invited Talk</span>
+      <div class="speaker-talk-title">A Framework for Incorporating Traffic Rules Compliance into a Machine-Learned Trajectory Planner</div>
+      <div class="speaker-abstract">End-to-end machine learning is gaining traction in the autonomous vehicle space, and there is a need to ensure that ML models generating trajectories can incorporate traffic rules into their learning framework. This talk highlights methodologies that Torc is employing to incorporate traffic rules compliance into an end-to-end reinforcement learning trajectory planner model.</div>
+    </div>
+
+    <!-- Henk Goossens -->
+    <div class="speaker-card">
+      <div class="speaker-header">
+        <div class="speaker-avatar gold">HG</div>
+        <div>
+          <div class="speaker-name"><a href="https://www.linkedin.com/in/henk-goossens-01a567/" target="_blank">Henk Goossens</a></div>
+          <div class="speaker-affiliation">TNO · Innovation Partnerships, Safety Assessment of Automated Driving</div>
+        </div>
+      </div>
+      <span class="speaker-tag invited">Invited Talk</span>
+      <div class="speaker-talk-title">The Rulebook Flywheel for Safe Automated Driving</div>
+      <div class="speaker-abstract">This presentation addresses the challenge of specifying and verifying competent driving behavior. It covers the TNO position on the design and use of behavior rulebooks for the definition, automated evaluation, and continuous improvement of competent driving behavior. Behavior rulebooks formalize both traffic and driving rules, offering consistency, transparency, and a base for measurable refinement towards safe and responsible autonomous driving.</div>
+    </div>
+
+    <!-- Soheil Sohrabi -->
+    <div class="speaker-card">
+      <div class="speaker-header">
+        <div class="speaker-avatar dark">SS</div>
+        <div>
+          <div class="speaker-name"><a href="https://www.linkedin.com/in/soheil-sohrabi/" target="_blank">Soheil Sohrabi, Ph.D.</a></div>
+          <div class="speaker-affiliation">General Motors · Risk Assessment Engineering</div>
+        </div>
+      </div>
+      <span class="speaker-tag invited">Invited Talk</span>
+      <div class="speaker-talk-title">Continuous Scoring of AV Behavioral Violation</div>
+      <div class="speaker-abstract">Behavioral metrics for autonomous vehicles are often framed as binary indicators of rule violations, which limits their ability to distinguish between minor deviations and truly hazardous behavior. This talk proposes a continuous, non-linear severity scoring framework grounded in Extreme Value Theory to better capture the spectrum of abnormal AV behavior relative to human driving, yielding a statistically principled scoring scheme that aligns severity with behavioral rarity.</div>
+    </div>
+
+    <!-- Chaitanya Shinde -->
+    <div class="speaker-card">
+      <div class="speaker-header">
+        <div class="speaker-avatar">CS</div>
+        <div>
+          <div class="speaker-name"><a href="https://www.linkedin.com/in/c-shinde/" target="_blank">Chaitanya Shinde</a></div>
+          <div class="speaker-affiliation">Torc Robotics · Safety Architecture &amp; Standards</div>
+        </div>
+      </div>
+      <span class="speaker-tag invited">Invited Talk</span>
+      <div class="speaker-talk-title">From ODD to Action: A Competency-Based Taxonomy for Systematic Autonomous Driving Behaviors</div>
+      <div class="speaker-abstract">This talk presents a competency-based taxonomy that bridges the gap between Operational Design Domain definitions and actionable driving behaviors for autonomous vehicles. Drawing on expertise in functional safety (ISO 26262, ISO 21448) and AI safety standards development at SAE International and IEEE, the talk outlines a systematic approach for specifying, decomposing, and validating autonomous driving competencies across diverse operational scenarios.</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ACCEPTED PAPERS -->
+<section id="papers">
+  <div class="section-label">Accepted Papers</div>
+  <h2 class="section-title">Workshop Paper Presentations</h2>
+  <p class="section-body" style="margin-bottom:0.5rem;">Workshop papers are peer-reviewed in accordance with IEEE regulations and published in IEEE Xplore as part of the IEEE IV Workshops Proceedings.</p>
+
+  <div class="paper-card">
+    <div class="paper-title">The Rulebook Flywheel for Safe Automated Driving</div>
+    <div class="paper-authors">Henk Goossens, Chris van der Ploeg, Michiel Braat, Jan-Pieter Paardekooper, Hari Hara Sharan Nagalur Subraveti, Arturo Tejada, Olaf Op den Camp</div>
+    <div class="paper-abstract">This paper covers a position statement on the use of behavior rulebooks for the definition, automated evaluation and continuous improvement of competent driving behavior of automated vehicles. Behavior rulebooks formalize the traffic and driving rules for assessing the automated vehicles' actions, offering consistency, transparency, and a base for measurable refinement. The authors assert that such structured evaluation supports reliable and accountable behavior, emphasizing how rule-driven assessment can guide automated vehicles toward safe and acceptable performance in real-world settings.</div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="section-label">Program</div>
+  <h2 class="section-title">Workshop Schedule</h2>
+  <p class="section-body" style="margin-bottom:1rem;">Draft schedule — final times and session order to be confirmed.</p>
+
+  <table class="schedule-table">
+    <tr class="break-row">
+      <td class="time-col">08:30</td>
+      <td><span class="event-title">Registration &amp; Coffee</span></td>
+    </tr>
+    <tr>
+      <td class="time-col">09:00</td>
+      <td>
+        <span class="event-title">Opening Remarks</span>
+        <div class="event-detail">Workshop organizers outline goals and structure</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">09:15</td>
+      <td>
+        <span class="event-title">Invited Talk: From ODD to Action: A Competency-Based Taxonomy for Systematic Autonomous Driving Behaviors</span>
+        <div class="event-detail">Chaitanya Shinde · Torc Robotics</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">10:00</td>
+      <td>
+        <span class="event-title">Invited Talk: The Rulebook Flywheel for Safe Automated Driving</span>
+        <div class="event-detail">Henk Goossens · TNO</div>
+      </td>
+    </tr>
+    <tr class="break-row">
+      <td class="time-col">10:45</td>
+      <td><span class="event-title">Coffee Break</span></td>
+    </tr>
+    <tr>
+      <td class="time-col">11:00</td>
+      <td>
+        <span class="event-title">Invited Talk: A Framework for Incorporating Traffic Rules Compliance into a Machine-Learned Trajectory Planner</span>
+        <div class="event-detail">Jerry Lopez · Torc Robotics</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">11:45</td>
+      <td>
+        <span class="event-title">Invited Talk: Co-Design of Rulebooks and Autonomous Vehicles</span>
+        <div class="event-detail">Andrea Censi · ETH Zürich</div>
+      </td>
+    </tr>
+    <tr class="break-row">
+      <td class="time-col">12:30</td>
+      <td><span class="event-title">Lunch Break</span></td>
+    </tr>
+    <tr>
+      <td class="time-col">13:30</td>
+      <td>
+        <span class="event-title">Invited Talk: Continuous Scoring of AV Behavioral Violation</span>
+        <div class="event-detail">Soheil Sohrabi · General Motors</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">14:15</td>
+      <td>
+        <span class="event-title">Invited Talk: To Be Announced</span>
+        <div class="event-detail">Speaker to be confirmed</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">15:00</td>
+      <td>
+        <span class="event-title">Invited Talk: To Be Announced</span>
+        <div class="event-detail">Speaker to be confirmed</div>
+      </td>
+    </tr>
+    <tr class="break-row">
+      <td class="time-col">15:45</td>
+      <td><span class="event-title">Coffee Break</span></td>
+    </tr>
+    <tr>
+      <td class="time-col">16:00</td>
+      <td>
+        <span class="event-title">Panel Discussion</span>
+        <div class="event-detail">Cross-disciplinary dialogue on the future of behavioral rulebooks for autonomous driving</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="time-col">17:00</td>
+      <td>
+        <span class="event-title">Research Roadmap &amp; Closing Remarks</span>
+        <div class="event-detail">Forward-looking discussion and workshop synthesis</div>
+      </td>
+    </tr>
+    <tr class="break-row">
+      <td class="time-col">17:30</td>
+      <td><span class="event-title">Workshop Concludes</span></td>
+    </tr>
+  </table>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SUBMISSION INFO -->
+<section id="submission">
+  <div class="section-label">Submission Information</div>
+  <h2 class="section-title">Call for Papers</h2>
+  <div class="section-body">
+    <p>We invite researchers and practitioners to submit workshop papers on topics aligned with the themes of this workshop. Submitted papers will be peer-reviewed in accordance with IEEE regulations and published in IEEE Xplore as part of the IEEE IV Workshops Proceedings (separate from the main IEEE IV Proceedings).</p>
+    <p>Papers must be formatted according to the IEEE IV 2026 formatting guidelines (IEEE double-column format, up to 6 pages + 2 paid pages). Submissions should be made via PaperCept using the workshop code below.</p>
+  </div>
+
+  <div class="dates-bar">
+    <div class="date-item">
+      <div class="date-label">Paper Submission</div>
+      <div class="date-value past">January 30, 2026</div>
+    </div>
+    <div class="date-item">
+      <div class="date-label">Acceptance Notification</div>
+      <div class="date-value past">February 28, 2026</div>
+    </div>
+    <div class="date-item">
+      <div class="date-label">Final Submission</div>
+      <div class="date-value past">March 15, 2026</div>
+    </div>
+    <div class="date-item">
+      <div class="date-label">Workshop Date</div>
+      <div class="date-value">June 22, 2026</div>
+    </div>
+  </div>
+
+  <div class="cfp-box">
+    <h3>Submit Your Paper</h3>
+    <p>Submit via PaperCept at <a href="https://its.papercept.net" style="color:var(--accent-light)">its.papercept.net</a>. Select "Submit a contribution to IV 2026", then choose "Workshop paper" as the submission type.</p>
+    <div class="cfp-code">Workshop Code: 2w765</div>
+    <br>
+    <a href="https://ieee-iv.org/2026/contributions/call-for-workshop-papers/" class="cfp-link">View Full Call for Workshop Papers →</a>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ORGANIZERS -->
+<section id="organizers">
+  <div class="section-label">Organizing Committee</div>
+  <h2 class="section-title">Workshop Organizers</h2>
+  <div class="organizers-list">
+    <div class="organizer">
+      <div class="organizer-role">Associate Editor</div>
+      <div class="organizer-name"><a href="https://www.linkedin.com/in/hadihajieghrary/" target="_blank">Hadi Hajieghrary, Ph.D.</a></div>
+      <div class="organizer-affiliation">Torc Robotics</div>
+    </div>
+    <div class="organizer">
+      <div class="organizer-role">Organizer</div>
+      <div class="organizer-name"><a href="https://www.linkedin.com/in/paulschmittyellowjacket/" target="_blank">Paul Schmitt</a></div>
+      <div class="organizer-affiliation">Reynolds &amp; Moore</div>
+    </div>
+    <div class="organizer">
+      <div class="organizer-role">Organizer</div>
+      <div class="organizer-name"><a href="https://www.linkedin.com/in/miguel-hurtado-phd-98013021/" target="_blank">Miguel Hurtado, Ph.D.</a></div>
+      <div class="organizer-affiliation">Torc Robotics</div>
+    </div>
+    <div class="organizer">
+      <div class="organizer-role">Organizer</div>
+      <div class="organizer-name"><a href="https://www.linkedin.com/in/c-shinde/" target="_blank">Chaitanya Shinde</a></div>
+      <div class="organizer-affiliation">Torc Robotics</div>
+    </div>
+    <div class="organizer">
+      <div class="organizer-role">Organizer</div>
+      <div class="organizer-name"><a href="https://www.linkedin.com/in/benedikt-walter-250888/" target="_blank">Benedikt Walter, Ph.D.</a></div>
+      <div class="organizer-affiliation">Torc Robotics</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>IEEE IV 2026 Workshop on Behavior Taxonomies and Rulebooks for Safety-Assured Autonomous Driving</p>
+  <p style="margin-top:0.5rem;">
+    <a href="https://ieee-iv.org/2026/">IEEE IV 2026 Conference Website</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:hadi.hajieghrary@gmail.com">Contact Organizers</a>
+  </p>
+  <p style="margin-top:1rem; font-size:0.75rem; color:var(--gray-500);">&copy; 2026 Workshop Organizing Committee. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
